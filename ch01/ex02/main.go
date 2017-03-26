@@ -5,8 +5,16 @@ import (
 	"os"
 )
 
+func addIndex(args []string) []string {
+	var r []string
+	for idx, arg := range args {
+		r = append(r, fmt.Sprintf("%d %s", idx, arg))
+	}
+	return r
+}
+
 func main() {
-	for idx, arg := range os.Args[1:] {
-		fmt.Printf("%d %s\n", idx, arg)
+	for _, arg := range addIndex(os.Args[1:]) {
+		fmt.Println(arg)
 	}
 }
