@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./ex01
+go run main.go a b c
