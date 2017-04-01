@@ -14,7 +14,7 @@ func TestAddIndex(t *testing.T) {
 	}
 	for i := range input {
 		if actual[i] != expected[i] {
-			t.Errorf(`addIndex(%q)[%d] = %q, want %q`, input, i, actual[i], expected[i])
+			t.Errorf("addIndex(%q)[%d] = %q, want %q", input, i, actual[i], expected[i])
 		}
 	}
 }
