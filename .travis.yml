@@ -5,9 +5,3 @@ go:
   - 1.6
   - 1.7
   - 1.8
-
-scripts:
-  - echo set -ex > testall_all.bash
-  - find . -maxdepth 3 -name testall.bash -type f >> testall_all.bash
-  - ./testall_all.bash
-  - rm ./testall_all.bash
