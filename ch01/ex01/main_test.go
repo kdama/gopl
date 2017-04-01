@@ -9,6 +9,6 @@ func TestJoinWithSpace(t *testing.T) {
 	actual := joinWithSpace(input)
 	expected := "a b c"
 	if actual != expected {
-		t.Errorf(`joinWithSpace(%q) = %q, want %q`, input, actual, expected)
+		t.Errorf("joinWithSpace(%q) = %q, want %q", input, actual, expected)
 	}
 }
