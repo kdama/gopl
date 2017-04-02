@@ -1,5 +1,7 @@
 # runall.bash
 
+出力は次の通り。
+
 ```
 0.20s     3154  http://t.co
 0.24s    10672  http://google.com
@@ -52,4 +54,15 @@ Get https://detail.tmall.com/?tbpm=3: stopped after 10 redirects
 4.50s   549170  http://youtube.com
 15.53s   278202  http://360.cn
 15.53s elapsed
+```
+
+# あるウェブサイトが応答しない場合
+
+あるウェブサイト (ここでは http://this-does-not-respond.example.com とする) が応答しない場合の出力は、次の通り。
+
+```
+$ go run main.go http://google.com http://this-does-not-respond.example.com
+0.31s    10664  http://google.com
+Get http://this-does-not-respond.example.com: dial tcp this-does-not-respond.example.com:80: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+21.00s elapsed
 ```
