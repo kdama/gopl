@@ -1,6 +1,6 @@
 # runall.bash
 
-出力は次の通り。
+出力は、次の通りです。
 
 ```
 0.20s     3154  http://t.co
@@ -58,7 +58,7 @@ Get https://detail.tmall.com/?tbpm=3: stopped after 10 redirects
 
 # あるウェブサイトが応答しない場合
 
-あるウェブサイト (ここでは http://this-does-not-respond.example.com とする) が応答しない場合の出力は、次の通り。
+あるウェブサイト (ここでは http://this-does-not-respond.example.com とします) が応答しない場合の出力は、次の通りです。
 
 ```
 $ go run main.go http://google.com http://this-does-not-respond.example.com
