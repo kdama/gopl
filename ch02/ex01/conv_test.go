@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-const EPSILON = 1e-10
+const Epsilon = 1e-10
 
 func equalsFloat64(x, y float64) bool {
-	return math.Abs(x-y) < EPSILON
+	return math.Abs(x-y) < Epsilon
 }
 
 func TestCToK(t *testing.T) {
