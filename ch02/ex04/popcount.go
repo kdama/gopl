@@ -21,7 +21,7 @@ func TablePopCount(x uint64) int {
 		pc[byte(x>>(7*8))])
 }
 
-// BitShiftPopCount は、ループを用いて x のポピュレーションカウントを返します。
+// BitShiftPopCount は、ビットシフトを用いて x のポピュレーションカウントを返します。
 func BitShiftPopCount(x uint64) int {
 	count := 0
 	for i := uint64(0); i < 64; i++ {
