@@ -47,11 +47,21 @@ func TestAlternativePopCount(t *testing.T) {
 func BenchmarkPopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCount(0)
+		PopCount(1)
+		PopCount(1 << 8)
+		PopCount(1<<8 + 1)
+		PopCount(1<<8 - 1)
+		PopCount(1<<64 - 1)
 	}
 }
 
 func BenchmarkAlternativePopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		AlternativePopCount(0)
+		AlternativePopCount(1)
+		AlternativePopCount(1 << 8)
+		AlternativePopCount(1<<8 + 1)
+		AlternativePopCount(1<<8 - 1)
+		AlternativePopCount(1<<64 - 1)
 	}
 }
