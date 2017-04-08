@@ -24,10 +24,8 @@ func TablePopCount(x uint64) int {
 // LoopPopCount は、ループを用いて x のポピュレーションカウントを返します。
 func LoopPopCount(x uint64) int {
 	count := 0
-	for i := uint64(0); i < 64; i++ {
-		if x>>i%2 == 1 {
-			count++
-		}
+	for i := uint64(0); i < 8; i++ {
+		count += int(pc[byte(x>>(i*8))])
 	}
 	return count
 }
