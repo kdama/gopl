@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestPopCount(t *testing.T) {
+func TestTablePopCount(t *testing.T) {
 	var tests = []struct {
 		x    uint64
 		want int
@@ -18,13 +18,13 @@ func TestPopCount(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if got := PopCount(test.x); got != test.want {
-			t.Errorf("PopCount(%d) = %d, want %d", test.x, got, test.want)
+		if got := TablePopCount(test.x); got != test.want {
+			t.Errorf("TablePopCount(%d) = %d, want %d", test.x, got, test.want)
 		}
 	}
 }
 
-func TestAlternativePopCount(t *testing.T) {
+func TestLoopPopCount(t *testing.T) {
 	var tests = []struct {
 		x    uint64
 		want int
@@ -38,30 +38,30 @@ func TestAlternativePopCount(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if got := AlternativePopCount(test.x); got != test.want {
-			t.Errorf("AlternativePopCount(%d) = %d, want %d", test.x, got, test.want)
+		if got := LoopPopCount(test.x); got != test.want {
+			t.Errorf("LoopPopCount(%d) = %d, want %d", test.x, got, test.want)
 		}
 	}
 }
 
-func BenchmarkPopCount(b *testing.B) {
+func BenchmarkTablePopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		PopCount(0)
-		PopCount(1)
-		PopCount(1 << 8)
-		PopCount(1<<8 + 1)
-		PopCount(1<<8 - 1)
-		PopCount(1<<64 - 1)
+		TablePopCount(0)
+		TablePopCount(1)
+		TablePopCount(1 << 8)
+		TablePopCount(1<<8 + 1)
+		TablePopCount(1<<8 - 1)
+		TablePopCount(1<<64 - 1)
 	}
 }
 
-func BenchmarkAlternativePopCount(b *testing.B) {
+func BenchmarkLoopPopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		AlternativePopCount(0)
-		AlternativePopCount(1)
-		AlternativePopCount(1 << 8)
-		AlternativePopCount(1<<8 + 1)
-		AlternativePopCount(1<<8 - 1)
-		AlternativePopCount(1<<64 - 1)
+		LoopPopCount(0)
+		LoopPopCount(1)
+		LoopPopCount(1 << 8)
+		LoopPopCount(1<<8 + 1)
+		LoopPopCount(1<<8 - 1)
+		LoopPopCount(1<<64 - 1)
 	}
 }
