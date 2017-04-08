@@ -7,7 +7,7 @@ import (
 func TestCelsiusString(t *testing.T) {
 	var tests = []struct {
 		celsius Celsius
-		want  string
+		want    string
 	}{
 		{0, "0°C"},
 		{1, "1°C"},
@@ -26,7 +26,7 @@ func TestCelsiusString(t *testing.T) {
 func TestFahrenheitString(t *testing.T) {
 	var tests = []struct {
 		fahrenheit Fahrenheit
-		want     string
+		want       string
 	}{
 		{0, "0°F"},
 		{1, "1°F"},
