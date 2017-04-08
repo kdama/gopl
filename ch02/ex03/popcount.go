@@ -9,8 +9,8 @@ func init() {
 	}
 }
 
-// PopCount は、テーブルを用いて x のポピュレーションカウントを返します。
-func PopCount(x uint64) int {
+// TablePopCount は、テーブル参照を用いて x のポピュレーションカウントを返します。
+func TablePopCount(x uint64) int {
 	return int(pc[byte(x>>(0*8))] +
 		pc[byte(x>>(1*8))] +
 		pc[byte(x>>(2*8))] +
@@ -21,8 +21,8 @@ func PopCount(x uint64) int {
 		pc[byte(x>>(7*8))])
 }
 
-// AlternativePopCount は、ループを用いて x のポピュレーションカウントを返します。
-func AlternativePopCount(x uint64) int {
+// LoopPopCount は、ループを用いて x のポピュレーションカウントを返します。
+func LoopPopCount(x uint64) int {
 	count := 0
 	for i := uint64(0); i < 64; i++ {
 		if x>>i%2 == 1 {
