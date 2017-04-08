@@ -24,8 +24,8 @@ func TablePopCount(x uint64) int {
 // LSBPopCount は、LSB へのビット演算を用いて x のポピュレーションカウントを返します。
 func LSBPopCount(x uint64) int {
 	count := 0
-	for x > 0 {
-		x = x & (x - 1)
+	for x != 0 {
+		x &= x - 1
 		count++
 	}
 	return count
