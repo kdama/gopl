@@ -1,3 +1,4 @@
+// ex06 は、グレースケールのグラデーションを用いた、リサジュー図形の GIF アニメーションを生成します。
 package main
 
 import (
@@ -44,6 +45,7 @@ func lissajous(out io.Writer) {
 	gif.EncodeAll(out, &anim) // NOTE: ignoring encoding errors
 }
 
+// getPalette は、グレースケールのパレットを生成します。
 func getPalette(colorRes int) []color.Color {
 	if colorRes < 1 {
 		return []color.Color{}
@@ -56,6 +58,7 @@ func getPalette(colorRes int) []color.Color {
 	return palette
 }
 
+// getPalette は、与えられた明度に対応する、パレットのインデックスを返します。
 func getGrayIndex(brightness float64, palette []color.Color) uint8 {
 	if brightness < 0 || brightness > 1 {
 		return 0
