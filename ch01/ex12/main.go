@@ -1,3 +1,4 @@
+// ex12 は、URL からパラメータ値を読み込んで、対応するリサージュ図形を生成するサーバです。
 package main
 
 import (
@@ -62,6 +63,8 @@ func lissajous(out io.Writer, cycles int, res float64, size int, nframes int, de
 	gif.EncodeAll(out, &anim) // NOTE: ignoring encoding errors
 }
 
+// parseFirstFloat64OrDefault は、与えられた文字列の配列のうち最初の要素を、整数にパースして返します。
+// パース可能な要素が 1 個もない場合は、与えられたデフォルト値を返します。
 func parseFirstIntOrDefault(array []string, defaultValue int) int {
 	if len(array) < 1 {
 		return defaultValue
@@ -73,6 +76,8 @@ func parseFirstIntOrDefault(array []string, defaultValue int) int {
 	return value
 }
 
+// parseFirstFloat64OrDefault は、与えられた文字列の配列のうち最初の要素を、浮動小数点数にパースして返します。
+// パース可能な要素が 1 個もない場合は、与えられたデフォルト値を返します。
 func parseFirstFloat64OrDefault(array []string, defaultValue float64) float64 {
 	if len(array) < 1 {
 		return defaultValue
