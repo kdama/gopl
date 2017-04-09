@@ -6,18 +6,18 @@ import (
 
 func BenchmarkEcho1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		echo1()
+		Echo1()
 	}
 }
 
 func BenchmarkEcho2(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		echo2()
+		Echo2()
 	}
 }
 
 func BenchmarkEcho3(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		echo3()
+		Echo3()
 	}
 }
