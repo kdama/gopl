@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
+find . -name "*.txt" | xargs rm -f
 go run main.go http://pi.karmona.com
-diff out/1.txt out/2.txt
+diff -r out/1 out/2
