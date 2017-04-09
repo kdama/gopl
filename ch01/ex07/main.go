@@ -1,3 +1,4 @@
+// ex07 は、io.Copy を利用して URL にある内容を表示します。
 package main
 
 import (
