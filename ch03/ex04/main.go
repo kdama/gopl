@@ -12,7 +12,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"math"
 	"net/http"
@@ -39,7 +38,7 @@ func main() {
 		topColor := parseFirstColorOrDefault(r.Form["topColor"], color.RGBA{0xff, 0x00, 0x00, 0xff})
 		bottomColor := parseFirstColorOrDefault(r.Form["bottomColor"], color.RGBA{0x00, 0x00, 0xff, 0xff})
 		w.Header().Set("Content-Type", "image/svg+xml")
-		fmt.Fprint(w, surface.Render(width, height, cells, xyrange, xyscale, zscale, angle, topColor, bottomColor))
+		surface.Render(w, width, height, cells, xyrange, xyscale, zscale, angle, topColor, bottomColor)
 	}
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))

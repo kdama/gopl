@@ -4,6 +4,7 @@ package surface
 import (
 	"fmt"
 	"image/color"
+	"io"
 	"math"
 
 	"github.com/kdama/gopl/ch03/ex04/colors"
@@ -11,8 +12,8 @@ import (
 )
 
 // Render は 3-D 面の関数の SVG レンダリングの結果を返します。
-func Render(width, height, cells int, xyrange, xyscale, zscale, angle float64, topColor, bottomColor color.Color) (result string) {
-	result += fmt.Sprintf("<svg xmlns='http://www.w3.org/2000/svg' "+
+func Render(w io.Writer, width, height, cells int, xyrange, xyscale, zscale, angle float64, topColor, bottomColor color.Color) {
+	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
 
@@ -31,14 +32,12 @@ func Render(width, height, cells int, xyrange, xyscale, zscale, angle float64, t
 				floats.IsFinite(bx) && floats.IsFinite(by) &&
 				floats.IsFinite(cx) && floats.IsFinite(cy) &&
 				floats.IsFinite(dx) && floats.IsFinite(dy) {
-				result += fmt.Sprintf("<polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill:%s'/>\n",
+				fmt.Fprintf(w, "<polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill:%s'/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
 			}
 		}
 	}
-	result += "</svg>"
-
-	return result
+	fmt.Fprintf(w, "</svg>")
 }
 
 func corner(i, j, width, height, cells int, xyrange, xyscale, zscale, angle float64) (float64, float64) {
