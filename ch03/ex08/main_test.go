@@ -4,8 +4,8 @@ import (
 	"math/big"
 	"testing"
 
-	"./complexfloat"
-	"./complexrat"
+	"github.com/kdama/gopl/ch03/ex08/complexfloat"
+	"github.com/kdama/gopl/ch03/ex08/complexrat"
 )
 
 func BenchmarkMandelbrotComplex64(b *testing.B) {
@@ -32,7 +32,7 @@ func BenchmarkMandelbrotBigFloat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for y := float64(-2); y <= 2; y++ {
 			for x := float64(-2); x <= 2; x++ {
-				mandelbrotBigFloat(&complexfloat.ComplexFloat{big.NewFloat(x), big.NewFloat(y)})
+				mandelbrotBigFloat(&complexfloat.ComplexFloat{big.NewFloat(x), big.NewFloat(y), 1024})
 			}
 		}
 	}
