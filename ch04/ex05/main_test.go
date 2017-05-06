@@ -30,7 +30,7 @@ func TestRemoveDup(t *testing.T) {
 	for _, test := range tests {
 		got := removeDup(test.s)
 		if !equals(got, test.want) {
-			t.Errorf("reverse(%v) = %v, want %v", test.scopy, got, test.want)
+			t.Errorf("removeDup(%v) = %v, want %v", test.scopy, got, test.want)
 		}
 	}
 }
