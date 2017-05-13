@@ -89,6 +89,8 @@ func main() {
 	http.HandleFunc("/", handleIssues)
 	http.HandleFunc("/milestones", handleMilestones)
 	http.HandleFunc("/users", handleUsers)
+
+	fmt.Println("Listening at http://localhost:8000")
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
