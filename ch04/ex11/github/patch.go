@@ -35,7 +35,7 @@ func patchIssue(owner, repo, number string, fields map[string]string) error {
 		return err
 	}
 
-	// We must close resp.Body on all execution paths below this line.
+	// この行よりも下の全てのパスで、resp.Body をクローズする必要があります。
 	resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
@@ -52,10 +52,16 @@ func UpdateIssue(owner, repo, number string, fields map[string]string) error {
 
 // ReopenIssue は、Close された GitHub Issue を再び Open します。
 func ReopenIssue(owner, repo, number string) error {
-	return patchIssue(owner, repo, number, map[string]string{"state": "open"})
+	fields := map[string]string{
+		"state": "open",
+	}
+	return patchIssue(owner, repo, number, fields)
 }
 
 // CloseIssue は、GitHub Issue を編集します。
 func CloseIssue(owner, repo, number string) error {
-	return patchIssue(owner, repo, number, map[string]string{"state": "closed"})
+	fields := map[string]string{
+		"state": "closed",
+	}
+	return patchIssue(owner, repo, number, fields)
 }

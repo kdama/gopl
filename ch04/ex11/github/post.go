@@ -34,7 +34,7 @@ func CreateIssue(owner, repo string, fields map[string]string) error {
 		return err
 	}
 
-	// We must close resp.Body on all execution paths below this line.
+	// この行よりも下の全てのパスで、resp.Body をクローズする必要があります。
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusCreated {
