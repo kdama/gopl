@@ -8,11 +8,11 @@ import (
 	"time"
 )
 
-func getIssueURL(owner string, repo string, number string) string {
+func getIssueURL(owner, repo, number string) string {
 	return fmt.Sprintf("https://api.github.com/repos/%s/%s/issues/%s", owner, repo, number)
 }
 
-func getIssuesURL(owner string, repo string) string {
+func getIssuesURL(owner, repo string) string {
 	return fmt.Sprintf("https://api.github.com/repos/%s/%s/issues", owner, repo)
 }
 

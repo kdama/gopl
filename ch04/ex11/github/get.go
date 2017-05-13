@@ -8,7 +8,7 @@ import (
 )
 
 // GetIssue は、指定された GitHub Issue を取得します。
-func GetIssue(owner string, repo string, number string) (*Issue, error) {
+func GetIssue(owner, repo, number string) (*Issue, error) {
 	req, err := http.NewRequest("GET", getIssueURL(owner, repo, number), nil)
 	if err != nil {
 		return nil, err
