@@ -1,3 +1,4 @@
+// Package github は、GitHub に対する Go の API を提供します。
 package github
 
 import (
@@ -8,7 +9,7 @@ import (
 	"strings"
 )
 
-// SearchIssues queries the GitHub issue tracker.
+// SearchIssues は、GitHub から Issue を検索します。
 func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(strings.Join(terms, " "))
 	resp, err := http.Get(IssuesURL + "?q=" + q)
