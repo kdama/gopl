@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -27,6 +28,8 @@ func main() {
 		renderPNG(w, x, y, zoom)
 	}
 	http.HandleFunc("/", handler)
+
+	fmt.Println("Listening at http://localhost:8000")
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 	return
 }
