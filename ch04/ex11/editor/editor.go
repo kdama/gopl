@@ -1,4 +1,4 @@
-// Package editor は、環境変数 EDITOR で指定されたエディタによってデータを操作します。
+// Package editor は、外部エディタによるデータ操作を提供します。
 package editor
 
 import (
@@ -9,14 +9,9 @@ import (
 	"os/exec"
 )
 
-// Edit は、環境変数 EDITOR で指定されたエディタを起動し、ユーザーに value を編集させます。
+// Edit は、外部エディタを起動し、ユーザーに value を編集させます。
 func Edit(value map[string]string) error {
-	editor := os.Getenv("EDITOR")
-
-	// vi は、ほとんど全ての Linux ディストリビューションに含まれます。
-	if editor == "" {
-		editor = "vi"
-	}
+	editor := getEditorName()
 
 	tempFile, err := ioutil.TempFile("", "")
 	if err != nil {
@@ -59,6 +54,22 @@ func Edit(value map[string]string) error {
 		return err
 	}
 	return nil
+}
+
+// 外部エディタの名前を取得します。
+// 外部エディタは、Git のように、環境変数 GIT_EDITOR または EDITOR で指定します。
+// https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables
+func getEditorName() string {
+	editor := os.Getenv("GIT_EDITOR")
+	if editor == "" {
+		editor = os.Getenv("EDITOR")
+	}
+	// vi は、ほとんど全ての Linux ディストリビューションに含まれるので、
+	// 外部エディタが指定されなかった場合は vi を起動します。
+	if editor == "" {
+		editor = "vi"
+	}
+	return editor
 }
 
 // removeUTF8BOM は、バイト列の先頭に UTF-8 BOM があった場合、それを削除します。
