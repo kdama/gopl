@@ -1,5 +1,5 @@
 // ch03/ex02 は、鶏卵の箱のようなものの SVG レンダリングを計算します。
-// 計算には式 pow(2, sin(y)) * pow(2, sin(x)) / 12 を用います。
+// 計算には式 z = pow(2, sin(y)) * pow(2, sin(x)) / 12 を用います。
 package main
 
 import (

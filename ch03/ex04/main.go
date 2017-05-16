@@ -12,6 +12,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"net/http"
@@ -41,6 +42,8 @@ func main() {
 		surface.Render(w, width, height, cells, xyrange, xyscale, zscale, angle, topColor, bottomColor)
 	}
 	http.HandleFunc("/", handler)
+
+	fmt.Println("Listening at http://localhost:8000")
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 	return
 }
