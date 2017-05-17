@@ -68,7 +68,7 @@ func mainComplex64() {
 			img.Set(px, py, mandelbrotComplex64(z))
 		}
 		if *verboseFlag {
-			fmt.Fprintf(os.Stderr, "c064 (x, %04d)\n", py)
+			fmt.Fprintf(os.Stderr, "c064 (%d/%d)\n", py, height)
 		}
 	}
 	png.Encode(os.Stdout, img)
@@ -88,7 +88,7 @@ func mainComplex128() {
 			img.Set(px, py, mandelbrotComplex128(z))
 		}
 		if *verboseFlag {
-			fmt.Fprintf(os.Stderr, "c128 (x, %04d)\n", py)
+			fmt.Fprintf(os.Stderr, "c128 (%d/%d)\n", py, height)
 		}
 	}
 	png.Encode(os.Stdout, img)
@@ -107,13 +107,17 @@ func mainBigFloat() {
 	for py := 0; py < height; py++ {
 		x := big.NewFloat(-invzoom + xcenter).SetPrec(prec)
 		for px := 0; px < width; px++ {
-			z := &complexfloat.ComplexFloat{x, y, prec}
+			z := &complexfloat.ComplexFloat{
+				Re:   x,
+				Im:   y,
+				Prec: prec,
+			}
 			img.Set(px, py, mandelbrotBigFloat(z))
 			x.Add(x, dx)
 		}
 		y.Add(y, dy)
 		if *verboseFlag {
-			fmt.Fprintf(os.Stderr, "bfl (x, %04d)\n", py)
+			fmt.Fprintf(os.Stderr, "bflo (%d/%d)\n", py, height)
 		}
 	}
 	png.Encode(os.Stdout, img)
@@ -131,12 +135,15 @@ func mainBigRat() {
 	for py := 0; py < height; py++ {
 		x := big.NewRat(xcenter*zoom-2, zoom)
 		for px := 0; px < width; px++ {
-			z := &complexrat.ComplexRat{x, y}
+			z := &complexrat.ComplexRat{
+				Re: x,
+				Im: y,
+			}
 			img.Set(px, py, mandelbrotBigRat(z))
 			x.Add(x, dx)
 		}
 		if *verboseFlag {
-			fmt.Fprintf(os.Stderr, "bra (x, %04d)\n", py)
+			fmt.Fprintf(os.Stderr, "brat (%d/%d)\n", py, height)
 		}
 		y.Add(y, dy)
 	}
@@ -172,9 +179,9 @@ func mandelbrotBigFloat(z *complexfloat.ComplexFloat) color.Color {
 	iterations := uint8(*iterationsFlag)
 	two := big.NewFloat(2).SetPrec(prec)
 	v := &complexfloat.ComplexFloat{
-		big.NewFloat(0).SetPrec(prec),
-		big.NewFloat(0).SetPrec(prec),
-		prec,
+		Re:   big.NewFloat(0).SetPrec(prec),
+		Im:   big.NewFloat(0).SetPrec(prec),
+		Prec: prec,
 	}
 	for n := uint8(0); n < iterations; n++ {
 		v.Square().Add(z)
@@ -188,7 +195,10 @@ func mandelbrotBigFloat(z *complexfloat.ComplexFloat) color.Color {
 func mandelbrotBigRat(z *complexrat.ComplexRat) color.Color {
 	iterations := uint8(*iterationsFlag)
 	two := big.NewRat(2, 1)
-	v := &complexrat.ComplexRat{big.NewRat(0, 1), big.NewRat(0, 1)}
+	v := &complexrat.ComplexRat{
+		Re: big.NewRat(0, 1),
+		Im: big.NewRat(0, 1),
+	}
 	for n := uint8(0); n < iterations; n++ {
 		v.Square().Add(z)
 		if v.AbsCompare(two) > 0 {
