@@ -1,3 +1,4 @@
+// ch04/ex02 は、標準入力の SHA256, SHA384 または SHA512 ハッシュを表示します。
 package main
 
 import (

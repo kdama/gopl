@@ -15,6 +15,8 @@ func TestRemoveDupSpace(t *testing.T) {
 		{[]byte("A  B  C"), []byte("A B C")},
 		{[]byte("AB C  D   "), []byte("AB C D ")},
 		{[]byte("   A  B CD"), []byte(" A B CD")},
+		{[]byte("AB　C　　D　　　"), []byte("AB C D ")},
+		{[]byte("　　　A　　B　CD"), []byte(" A B CD")},
 	}
 
 	for _, test := range tests {
