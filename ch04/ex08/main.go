@@ -1,4 +1,4 @@
-// ch04/ex08 は、UTF-8 でエンコードされた文字列を逆順にします。
+// ch04/ex08 は、Unicode 分類に従って文字や数字などを数えます。
 package main
 
 import (

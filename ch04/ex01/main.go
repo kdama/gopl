@@ -1,3 +1,4 @@
+// ch04/ex01 は、2 つの SHA256 ハッシュで異なるビットの数を数えます。
 package main
 
 import (
