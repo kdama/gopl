@@ -8,7 +8,7 @@ import (
 )
 
 // GetIssues は、指定された GitHub リポジトリから一定数の Issue を取得します。
-func GetIssues(owner, repo string) (*[]Issue, error) {
+func GetIssues(owner, repo string) ([]Issue, error) {
 	req, err := http.NewRequest("GET", getIssuesURL(owner, repo), nil)
 	if err != nil {
 		return nil, err
@@ -31,5 +31,5 @@ func GetIssues(owner, repo string) (*[]Issue, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&issues); err != nil {
 		return nil, err
 	}
-	return &issues, nil
+	return issues, nil
 }
