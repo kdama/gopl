@@ -100,7 +100,7 @@ func generateCache(owner, repo string) error {
 		return err
 	}
 
-	issues = *got
+	issues = got
 
 	for _, issue := range issues {
 		if issue.Milestone != nil {
