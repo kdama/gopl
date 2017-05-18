@@ -1,10 +1,11 @@
+// ch04/ex11 は、コマンドラインからユーザが GitHub の Issue を作成、読み出し、更新、クローズできるツールです。
 package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"os"
+	"text/template"
 	"time"
 
 	"github.com/kdama/gopl/ch04/ex11/editor"

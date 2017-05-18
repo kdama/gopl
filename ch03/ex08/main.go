@@ -1,5 +1,5 @@
-// ch03/ex05 はマンデルブロフラクタルのフルカラーの PNG 画像を生成します。
-// 点 z が半径 2 の円を「出る」までに掛かった回数 mod 6 について、0 から順に、赤、白、緑、白、青、白、で塗ります。
+// ch03/ex08 は、complex64, complex128, big.Float, big.Rat のいずれかによって、マンデルブロフラクタルをレンダリングします。
+// 例: go run main.go -x -2 -zoom 15 -type complex64 > out/complex64_z15.png
 package main
 
 import (
