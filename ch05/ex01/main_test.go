@@ -15,8 +15,8 @@ func TestVisit(t *testing.T) {
 	}{
 		{"", []string{}},
 		{"<html></html>", []string{}},
-		{"<html><a href='foo'></a></html>", []string{"foo"}},
-		{"<html><a href='foo'></a><a href='日本語'></a></html>", []string{"foo", "日本語"}},
+		{"<html><a href='foo'>f</a></html>", []string{"foo"}},
+		{"<html><a href='foo'>f</a><a href='日本語'>日</a></html>", []string{"foo", "日本語"}},
 	}
 
 	for _, test := range tests {
