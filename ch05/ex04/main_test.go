@@ -15,12 +15,12 @@ func TestVisit(t *testing.T) {
 	}{
 		{"", []string{}},
 		{"<p>foo</p>", []string{}},
-		{"<img src='http://example.com/src.png'>", []string{"http://example.com/src.png"}},
-		{"<link rel='stylesheet' href='/src.css'>", []string{"/src.css"}},
-		{"<script src='../../../src.js'>", []string{"../../../src.js"}},
-		{"<video src='src.mp4' poster='poster.jpg'>", []string{"src.mp4", "poster.jpg"}},
-		{"<a href='./href.html' onClick='function(){ window.location=\"http://example.com/\" }'>", []string{"./href.html"}},
-		{"<p>foo</p><img src='src.png'><p>bar</p>", []string{"src.png"}},
+		{"<img src='http://example.com/src.png'/>", []string{"http://example.com/src.png"}},
+		{"<link rel='stylesheet' href='/src.css'/>", []string{"/src.css"}},
+		{"<script src='../../../src.js'/>", []string{"../../../src.js"}},
+		{"<video src='src.mp4' poster='poster.jpg'/>", []string{"src.mp4", "poster.jpg"}},
+		{"<a href='./href.html' onClick='function(){ window.location=\"http://example.com/\" }'/>", []string{"./href.html"}},
+		{"<p>foo<img src='src.png'/>bar</p>", []string{"src.png"}},
 	}
 
 	for _, test := range tests {
