@@ -37,6 +37,12 @@ func outline(url string) error {
 	return nil
 }
 
+// WriteHTML は、HTML の内容を pretty な形式で書き込みます。
+// この関数は、ch05/ex08 などで利用します。
+func WriteHTML(w io.Writer, n *html.Node) {
+	forEachNode(w, n, startElement, endElement)
+}
+
 func forEachNode(w io.Writer, n *html.Node, pre, post func(w io.Writer, n *html.Node)) {
 	if pre != nil {
 		pre(w, n)
