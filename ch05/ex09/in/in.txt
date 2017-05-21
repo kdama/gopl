@@ -1,0 +1,6 @@
+foo
+$foo
+$$foo
+$$$foo
+foo is foo, $foo is $foo.
+日本語は、日本語。$日本語は、$日本語。
