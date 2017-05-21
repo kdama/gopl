@@ -24,7 +24,7 @@ func TestCountWordsAndImages(t *testing.T) {
 			words  int
 			images int
 		}{words: 1, images: 0}},
-		{"<img src='http://example.com/src.png'>", struct {
+		{"<img src='http://example.com/src.png'/>", struct {
 			words  int
 			images int
 		}{words: 0, images: 1}},
@@ -32,11 +32,11 @@ func TestCountWordsAndImages(t *testing.T) {
 			words  int
 			images int
 		}{words: 0, images: 0}},
-		{"<p>Hello, world.</p><img src='src.png'><p>こんにちは<br>世界</p>", struct {
+		{"<p>Hello, world.<img src='src.png'/>こんにちは<br>世界</p>", struct {
 			words  int
 			images int
 		}{words: 4, images: 1}},
-		{"<p>Hello,world.</p><img src='src.png'><p>こんにちは世界</p>", struct {
+		{"<p>Hello,world.<img src='src.png'/>こんにちは世界</p>", struct {
 			words  int
 			images int
 		}{words: 2, images: 1}},

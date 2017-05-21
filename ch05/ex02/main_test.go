@@ -24,7 +24,7 @@ func TestVisit(t *testing.T) {
 			"body": 1,
 			"p":    2,
 		}},
-		{"<html><head></head><body><web-component></web-component></body></html>", map[string]int{
+		{"<html><head></head><body><web-component/></body></html>", map[string]int{
 			"html":          1,
 			"head":          1,
 			"body":          1,
