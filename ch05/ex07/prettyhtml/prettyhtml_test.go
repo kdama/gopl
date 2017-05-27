@@ -3,6 +3,7 @@ package prettyhtml
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -14,33 +15,33 @@ func equals(a, b *html.Node) bool {
 		return true
 	}
 	if a == nil || b == nil {
-		fmt.Printf("%v != %v\n", a, b)
+		fmt.Fprintf(os.Stderr, "nil and not nil: %v != %v\n", a, b)
 		return false
 	}
 	if a.Type != b.Type {
-		fmt.Printf("%v != %v\n", a.Type, b.Type)
+		fmt.Fprintf(os.Stderr, "different type: %v != %v\n", a.Type, b.Type)
 		return false
 	}
 	if a.Data != b.Data {
-		fmt.Printf("%q != %q\n", a.Data, b.Data)
+		fmt.Fprintf(os.Stderr, "different data: %q != %q\n", a.Data, b.Data)
 		return false
 	}
 	if len(a.Attr) != len(b.Attr) {
-		fmt.Printf("%v != %v\n", len(a.Attr), len(b.Attr))
+		fmt.Fprintf(os.Stderr, "different len of attr: %v != %v\n", len(a.Attr), len(b.Attr))
 		return false
 	}
 	for i := range a.Attr {
 		if a.Attr[i].Key != b.Attr[i].Key || a.Attr[i].Val != b.Attr[i].Val {
-			fmt.Printf("(%s, %s) != (%s, %s)\n", a.Attr[i].Key, b.Attr[i].Key, a.Attr[i].Val, b.Attr[i].Val)
+			fmt.Fprintf(os.Stderr, "different attr: (%s, %s) != (%s, %s)\n", a.Attr[i].Key, b.Attr[i].Key, a.Attr[i].Val, b.Attr[i].Val)
 			return false
 		}
 	}
 	if !equals(a.FirstChild, b.FirstChild) {
-		fmt.Printf("%v != %v\n", a, b)
+		fmt.Fprintf(os.Stderr, "different child: %v != %v\n", a, b)
 		return false
 	}
 	if !equals(a.NextSibling, b.NextSibling) {
-		fmt.Printf("%v != %v\n", a, b)
+		fmt.Fprintf(os.Stderr, "different sibling: %v != %v\n", a, b)
 		return false
 	}
 	return true
