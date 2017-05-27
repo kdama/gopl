@@ -1,4 +1,4 @@
-// ch06/ex01 は、IntSet のいくつかの関数を実行します。
+// ch06/ex03 は、IntSet の IntersectWith, DifferenceWith, SymmetricDifference 関数を実行します。
 package main
 
 import (
