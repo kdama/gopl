@@ -1,4 +1,4 @@
-// ch06/ex01 は、IntSet のいくつかの関数を実行します。
+// ch06/ex01 は、IntSet の AddAll 関数を実行します。
 package main
 
 import (
