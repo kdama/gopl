@@ -15,15 +15,15 @@ func main() {
 	is.Add(3)
 	is.Add(42)
 
+	fmt.Println(is)       // "{1 2 3 42}"
 	fmt.Println(is.Len()) // "4"
 
-	fmt.Println(is.Has(2)) // "true"
+	fmt.Println(is) // "{1 2 3 42}"
 	is.Remove(2)
-	fmt.Println(is.Len())  // "3"
-	fmt.Println(is.Has(2)) // "false"
+	fmt.Println(is) // "{1 3 42}"
 
 	is2 := is.Copy()
 	is.Clear()
-	fmt.Println(is.Len())  // "0"
-	fmt.Println(is2.Len()) // "3"
+	fmt.Println(is)  // "{}"
+	fmt.Println(is2) // "{1 3 42}"
 }
