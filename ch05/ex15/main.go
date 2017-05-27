@@ -1,4 +1,4 @@
-// ch05/ex15 は、可変子引数関数としての max や min の実装です。
+// ch05/ex15 は、可変個引数関数としての max や min の実装です。
 package main
 
 import "fmt"
