@@ -2,9 +2,8 @@ package main
 
 import (
 	"bytes"
-	"testing"
-
 	"strings"
+	"testing"
 
 	"golang.org/x/net/html"
 )
