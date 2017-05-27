@@ -29,13 +29,6 @@ func TestTopoSort(t *testing.T) {
 		}, []string{
 			"C", "B", "A",
 		}},
-		{map[string][]string{
-			"A": {"C"},
-			"B": {"C"},
-			"C": {},
-		}, []string{
-			"C", "A", "B",
-		}},
 	}
 
 	for _, test := range tests {
