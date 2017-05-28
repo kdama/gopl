@@ -5,8 +5,6 @@ import (
 	"testing"
 )
 
-// No tests for kelvinFlag and KelvinFlag
-
 const Epsilon = 1e-10
 
 func equalsFloat64(x, y float64) bool {

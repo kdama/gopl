@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-go run main.go -temp 0C
+go run main.go -temp 273.15K

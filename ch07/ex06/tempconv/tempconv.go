@@ -55,6 +55,9 @@ func (f *celsiusFlag) Set(s string) error {
 	case "F", "°F":
 		f.Celsius = FToC(Fahrenheit(value))
 		return nil
+	case "K":
+		f.Celsius = KToC(Kelvin(value))
+		return nil
 	}
 	return fmt.Errorf("invalid temperature %q", s)
 }
@@ -66,33 +69,4 @@ func CelsiusFlag(name string, value Celsius, usage string) *Celsius {
 	f := celsiusFlag{value}
 	flag.CommandLine.Var(&f, name, usage)
 	return &f.Celsius
-}
-
-type kelvinFlag struct{ Kelvin }
-
-func (f *kelvinFlag) Set(s string) error {
-	var unit string
-	var value float64
-	fmt.Sscanf(s, "%f%s", &value, &unit) // no error check needed
-	switch unit {
-	case "C", "°C":
-		f.Kelvin = CToK(Celsius(value))
-		return nil
-	case "F", "°F":
-		f.Kelvin = FToK(Fahrenheit(value))
-		return nil
-	case "K":
-		f.Kelvin = Kelvin(value)
-		return nil
-	}
-	return fmt.Errorf("invalid temperature %q", s)
-}
-
-// KelvinFlag は、指定された名前、デフォルト値、使い方を持つ Kelvin フラグ
-// を定義しており、そのフラグ変数のアドレスを返します。
-// フラグ引数は度数と単位です。例えば、"100C" です。
-func KelvinFlag(name string, value Kelvin, usage string) *Kelvin {
-	f := kelvinFlag{value}
-	flag.CommandLine.Var(&f, name, usage)
-	return &f.Kelvin
 }
