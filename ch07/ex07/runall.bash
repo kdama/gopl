@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-go run main.go
+# show help message
+go run main.go -temp foo
