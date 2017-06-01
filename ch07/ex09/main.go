@@ -58,26 +58,13 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
-		log.Print(err)
-	}
-
-	sortby := getStringOrDefault(r.Form["sortby"], "")
+	sortby := r.URL.Query().Get("sortby")
 	columns = removeString(columns, sortby)
 	columns = append(columns, sortby)
 
 	tracks := getTracks()
 	sort.Sort(sorting.MultiSort(tracks, columns))
 	printTracks(w, tracks)
-}
-
-// getStringOrDefault は、与えられた文字列の配列のうち最初の要素を返します。
-// 要素が 1 個もない場合は、与えられたデフォルト値を返します。
-func getStringOrDefault(array []string, defaultValue string) string {
-	if len(array) < 1 {
-		return defaultValue
-	}
-	return array[0]
 }
 
 // removeString は、与えられた文字列をスライスから 1 個削除します。
