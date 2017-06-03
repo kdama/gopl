@@ -1,3 +1,4 @@
+// ch07/ex12 は、商品のリストを HTML の表で表示する Web サーバです。
 package main
 
 import (
