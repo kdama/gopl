@@ -59,12 +59,17 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	sortby := r.URL.Query().Get("sortby")
-	columns = removeString(columns, sortby)
-	columns = append(columns, sortby)
+	columns = pushAsSet(columns, sortby)
 
 	tracks := getTracks()
 	sort.Sort(sorting.MultiSort(tracks, columns))
 	printTracks(w, tracks)
+}
+
+// pushAsSet は、スライスの末尾に文字列を追加します。
+// ただし、対象の文字列が既に含まれていた場合は、それを末尾に移動します。
+func pushAsSet(slice []string, s string) []string {
+	return append(removeString(slice, s), s)
 }
 
 // removeString は、与えられた文字列をスライスから 1 個削除します。
