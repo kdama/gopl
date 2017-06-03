@@ -11,6 +11,8 @@ type Expr interface {
 
 	// Equals は、expr と等しいかどうかを返します。
 	Equals(expr Expr) bool
+	// Vars は、式に含まれる全ての変数を返します。
+	Vars() []Var
 }
 
 // A Var identifies a variable, e.g., x.
@@ -35,4 +37,10 @@ type binary struct {
 type call struct {
 	fn   string // one of "pow", "sin", "sqrt"
 	args []Expr
+}
+
+// A ternary represents a ternary operator expression, e.g., x+y.
+type ternary struct {
+	op1, op2 rune // one of '?', ':'
+	x, y, z  Expr
 }
