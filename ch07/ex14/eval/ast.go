@@ -9,7 +9,7 @@ type Expr interface {
 
 	String() string
 
-	// Equlas は、expr と等しいかどうかを返します。
+	// Equals は、expr と等しいかどうかを返します。
 	Equals(expr Expr) bool
 }
 
