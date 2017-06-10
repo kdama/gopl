@@ -19,30 +19,32 @@ func main() {
 	fmt.Printf("%d issues:\n", result.TotalCount)
 
 	now := time.Now()
+	beforeMonth := now.AddDate(0, -1, 0)
+	beforeYear := now.AddDate(-1, 0, 0)
 
-	// 1 か月 (30 日) 未満に作成された Issue を報告します。
+	// 1 か月未満に作成された Issue を報告します。
 	fmt.Println("\n-- created at less than a month --")
 	for _, item := range result.Items {
-		days := now.Sub(item.CreatedAt).Hours() / 24
-		if days < 30 {
+		if item.CreatedAt.After(beforeMonth) {
 			printIssue(item)
 		}
 	}
 
-	// 1 か月 (30 日) 以上 1 年 (365 日) 未満に作成された Issue を報告します。
+	// 1 か月以上 1 年未満に作成された Issue を報告します。
 	fmt.Println("\n-- created at less than a year --")
 	for _, item := range result.Items {
-		days := now.Sub(item.CreatedAt).Hours() / 24
-		if days >= 30 && days < 365 {
+		if (item.CreatedAt.Before(beforeMonth) ||
+			item.CreatedAt.Equal(beforeMonth)) &&
+			item.CreatedAt.After(beforeYear) {
 			printIssue(item)
 		}
 	}
 
-	// 1 年 (365 日) 以上に作成された Issue を報告します。
+	// 1 年以上に作成された Issue を報告します。
 	fmt.Println("\n-- created at more than a year --")
 	for _, item := range result.Items {
-		days := now.Sub(item.CreatedAt).Hours() / 24
-		if days >= 365 {
+		if item.CreatedAt.Before(beforeYear) ||
+			item.CreatedAt.Equal(beforeYear) {
 			printIssue(item)
 		}
 	}
