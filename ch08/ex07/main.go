@@ -7,6 +7,9 @@ import (
 	"github.com/kdama/gopl/ch08/ex07/crawl"
 )
 
+// out は、ページの複製の保存先となるローカルディスク上のディレクトリです。
+const out = "./out"
+
 func main() {
 	worklist := make(chan []string)
 	var n int // number of pending sends to worklist
@@ -24,7 +27,7 @@ func main() {
 				seen[link] = true
 				n++
 				go func(link string) {
-					worklist <- crawl.Crawl(link)
+					worklist <- crawl.Crawl(link, out)
 				}(link)
 			}
 		}
