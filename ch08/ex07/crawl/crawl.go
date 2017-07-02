@@ -4,44 +4,55 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
-	"path/filepath"
-	"strings"
 )
-
-// out は、ページの複製の保存先となるディレクトリです。
-const out = "./out"
 
 var tokens = make(chan struct{}, 20)
 
 // Crawl は、対象のページをクロールして、ローカルディスクに保存します。
-func Crawl(path string) (nextPaths []string) {
+func Crawl(path, out string) (nextPaths []string) {
 	fmt.Println(path)
 
 	tokens <- struct{}{} // acquire a token
-	list, w, err := Extract(path)
+	nextPaths, err := crawl(path, out)
 	<-tokens // release the token
 
 	if err != nil {
 		log.Print(err)
 	}
 
-	err = save(path, w)
+	return nextPaths
+}
 
+func crawl(path, out string) (nextPaths []string, err error) {
+	body, isHTML, err := fetch(path)
 	if err != nil {
-		log.Print(err)
+		return
 	}
 
-	for _, extracted := range list {
+	// レスポンスが HTML ならば、リンクを抽出し、相対パスへの変換を行います。
+	var links []string
+	if isHTML {
+		links, body, err = extract(path, body)
+		if err != nil {
+			return
+		}
+	}
+
+	err = save(path, out, body)
+	if err != nil {
+		return
+	}
+
+	for _, extracted := range links {
 		same, err := sameDomain(path, extracted)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			continue
 		}
 		if same {
 			nextPaths = append(nextPaths, extracted)
 		}
 	}
-
 	return
 }
 
@@ -55,33 +66,4 @@ func sameDomain(x, y string) (bool, error) {
 		return false, err
 	}
 	return px.Host == py.Host, nil
-}
-
-func save(path string, data []byte) error {
-	parsed, err := url.Parse(path)
-	if err != nil {
-		return err
-	}
-
-	localPath := out + "/" + parsed.Host + parsed.Path
-	fmt.Println(parsed.Path)
-	fmt.Println(filepath.Base(parsed.Path))
-	if parsed.Path == "" || !strings.Contains(filepath.Base(parsed.Path), ".") {
-		localPath += "/index.html"
-	}
-	err = os.MkdirAll(filepath.Dir(localPath), os.ModePerm)
-	if err != nil {
-		return err
-	}
-	f, err := os.Create(localPath)
-	if err != nil {
-		return err
-	}
-
-	_, err = f.Write(data)
-	// Close file, but prefer error from Copy, if any.
-	if closeErr := f.Close(); err == nil {
-		err = closeErr
-	}
-	return err
 }

@@ -1,4 +1,4 @@
-// ch08/ex06 は、指定された深さまでをクロールする crawl2 です。
+// ch08/ex06 は、指定された深さまでをクロールする crawl2 です。URL と根からの深さを表示します。
 package main
 
 import (
@@ -26,10 +26,10 @@ func init() {
 var tokens = make(chan struct{}, 20)
 
 func crawl(work Work) []Work {
-	fmt.Println(work.url)
+	fmt.Printf("%d\t%s\n", work.depth, work.url)
 
-	// 対象の深さが (最大深さ - 1) のとき、それ以上クロールする必要はないので nil を返します。
-	if work.depth >= maxdepth-1 {
+	// 対象の深さが最大深さ以上のとき、それ以上クロールする必要はないので nil を返します。
+	if work.depth >= maxdepth {
 		return nil
 	}
 
@@ -57,7 +57,7 @@ func main() {
 	go func() {
 		works := []Work{}
 		for _, url := range args {
-			works = append(works, Work{url, 0})
+			works = append(works, Work{url, 1})
 		}
 		worklist <- works
 	}()
