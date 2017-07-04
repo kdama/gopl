@@ -19,26 +19,27 @@ func echo(c net.Conn, shout string, delay time.Duration) {
 }
 
 func handleConn(c net.Conn) {
-	chat := make(chan struct{})
-	disconnect := make(chan struct{})
+	ch := make(chan struct{})
 	input := bufio.NewScanner(c)
 	go func() {
 		for {
 			if input.Scan() {
-				chat <- struct{}{}
+				ch <- struct{}{}
 			} else {
-				disconnect <- struct{}{}
+				close(ch)
+				return
 			}
 		}
 	}()
 	for {
 		select {
-		case <-chat:
+		case _, ok := <-ch:
+			if !ok {
+				c.Close()
+				return
+			}
 			// NOTE: ignoring potential errors from input.Err()
 			go echo(c, input.Text(), 1*time.Second)
-		case <-disconnect:
-			c.Close()
-			return
 		case <-time.After(10 * time.Second):
 			c.Close()
 			return
