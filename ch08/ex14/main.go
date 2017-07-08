@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const timeout = 5 * time.Second
+const timeout = 5 * time.Minute
 
 type client struct {
 	name string
