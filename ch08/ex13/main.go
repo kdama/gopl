@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const timeout = 5 * time.Minute
+
 type client struct {
 	name string
 	ch   chan<- string // an outgoing message channel
@@ -83,7 +85,7 @@ func handleConn(conn net.Conn) {
 				conn.Close()
 				return
 			}
-		case <-time.After(5 * time.Minute):
+		case <-time.After(timeout):
 			conn.Close()
 			return
 		}
