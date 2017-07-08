@@ -3,11 +3,10 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-
-	"io/ioutil"
 
 	"github.com/kdama/gopl/ch08/ex07/crawl"
 )
