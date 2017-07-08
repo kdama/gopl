@@ -1,4 +1,4 @@
-// ch08/ex13 は、5 分間、何も発言しないクライアントを切断する chat です。
+// ch08/ex14 は、接続したクライアントに名前を尋ねる chat です。
 package main
 
 import (
@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const timeout = 5 * time.Minute
+const timeout = 5 * time.Second
 
 type client struct {
 	name string
@@ -57,13 +57,43 @@ func handleConn(conn net.Conn) {
 
 	ch := make(chan string) // outgoing client messages
 	go clientWriter(conn, ch)
+	input := bufio.NewScanner(conn)
 
-	who := conn.RemoteAddr().String()
-	ch <- "You are " + who
+	// クライアントに名前を尋ねます。
+	var who string
+	go func() {
+		ch <- "Input your name:"
+		if input.Scan() {
+			who = input.Text()
+			talk <- struct{}{}
+		} else {
+			leaving <- client{who, ch}
+			messages <- who + " has left"
+			conn.Close()
+			return
+		}
+	}()
+
+	// タイムアウト時間内に名前を答えないクライアントは切断します。
+loop:
+	for {
+		select {
+		case _, ok := <-talk:
+			if ok {
+				break loop
+			} else {
+				conn.Close()
+				return
+			}
+		case <-time.After(timeout):
+			conn.Close()
+			return
+		}
+	}
+
 	messages <- who + " has arrived"
 	entering <- client{who, ch}
 
-	input := bufio.NewScanner(conn)
 	go func() {
 		for {
 			if input.Scan() {
