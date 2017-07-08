@@ -11,10 +11,12 @@ import (
 )
 
 const timeout = 5 * time.Minute
+const outbuffer = 64 // 送信用メッセージチャンネルのバッファサイズ
 
 type client struct {
-	name string
-	ch   chan<- string // an outgoing message channel
+	name  string
+	inch  chan<- string // 受信用メッセージチャンネル
+	outch chan<- string // 送信用メッセージチャンネル
 }
 
 var (
@@ -31,7 +33,7 @@ func broadcaster() {
 			// Broadcast incoming message to all
 			// clients' outgoing message channels.
 			for cli := range clients {
-				cli.ch <- msg
+				cli.outch <- msg
 			}
 
 		case cli := <-entering:
@@ -42,84 +44,70 @@ func broadcaster() {
 			for c := range clients {
 				onlines = append(onlines, c.name)
 			}
-			cli.ch <- fmt.Sprintf("%d clients: %s", len(clients), strings.Join(onlines, ", "))
+			cli.outch <- fmt.Sprintf("%d clients: %s", len(clients), strings.Join(onlines, ", "))
 
 		case cli := <-leaving:
 			delete(clients, cli)
-			close(cli.ch)
+			close(cli.outch)
 		}
 	}
 }
 
 func handleConn(conn net.Conn) {
-	// クライアントが発言したことを通知します。
-	talk := make(chan struct{})
+	inch := make(chan string)
+	outch := make(chan string, outbuffer)
 
-	ch := make(chan string) // outgoing client messages
-	go clientWriter(conn, ch)
-	input := bufio.NewScanner(conn)
+	go clientReader(conn, inch)
+	go clientWriter(conn, outch)
 
 	// クライアントに名前を尋ねます。
 	var who string
-	go func() {
-		ch <- "Input your name:"
-		if input.Scan() {
-			who = input.Text()
-			talk <- struct{}{}
-		} else {
-			leaving <- client{who, ch}
-			messages <- who + " has left"
-			conn.Close()
-			return
-		}
-	}()
+
+	outch <- "Input your name:"
 
 	// タイムアウト時間内に名前を答えないクライアントは切断します。
-loop:
-	for {
-		select {
-		case _, ok := <-talk:
-			if ok {
-				break loop
-			} else {
-				conn.Close()
-				return
-			}
-		case <-time.After(timeout):
+	select {
+	case in, ok := <-inch:
+		if !ok {
 			conn.Close()
 			return
 		}
+		who = in
+	case <-time.After(timeout):
+		conn.Close()
+		return
 	}
 
 	messages <- who + " has arrived"
-	entering <- client{who, ch}
+	entering <- client{who, inch, outch}
 
-	go func() {
-		for {
-			if input.Scan() {
-				messages <- who + ": " + input.Text()
-				talk <- struct{}{}
+	for {
+		select {
+		case in, ok := <-inch:
+			if ok {
+				messages <- who + ": " + in
 			} else {
-				leaving <- client{who, ch}
+				leaving <- client{who, inch, outch}
 				messages <- who + " has left"
 				conn.Close()
 				return
 			}
-		}
-	}()
-	// NOTE: ignoring potential errors from input.Err()
-	for {
-		select {
-		case _, ok := <-talk:
-			if !ok {
-				conn.Close()
-				return
-			}
 		case <-time.After(timeout):
+			leaving <- client{who, inch, outch}
+			messages <- who + " has left"
 			conn.Close()
 			return
 		}
 	}
+}
+
+func clientReader(conn net.Conn, ch chan<- string) {
+	input := bufio.NewScanner(conn)
+	for input.Scan() {
+		ch <- input.Text()
+	}
+	close(ch)
+	conn.Close()
 }
 
 func clientWriter(conn net.Conn, ch <-chan string) {
