@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-func save(path, out string, data []byte) error {
+// Save は、与えられたバイト配列のデータをローカルディスクに保存します。
+func Save(path, out string, data []byte) error {
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return err
