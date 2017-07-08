@@ -38,7 +38,7 @@ func crawl(path, out string) (nextPaths []string, err error) {
 		}
 	}
 
-	err = save(path, out, body)
+	err = Save(path, out, body)
 	if err != nil {
 		return
 	}
