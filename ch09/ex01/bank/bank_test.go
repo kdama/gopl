@@ -1,6 +1,7 @@
 package bank
 
 import (
+	"sync"
 	"testing"
 )
 
@@ -59,11 +60,12 @@ func TestBank(t *testing.T) {
 		// init balance
 		Withdraw(Balance() - test.init)
 
-		done := make(chan struct{})
-
+		var wg sync.WaitGroup
 		for _, operation := range test.operations {
 			operation := operation
+			wg.Add(1)
 			go func() {
+				defer wg.Done()
 				switch operation.op {
 				case "deposit":
 					Deposit(operation.amount)
@@ -75,12 +77,9 @@ func TestBank(t *testing.T) {
 				case "balance":
 					Balance()
 				}
-				done <- struct{}{}
 			}()
 		}
-		for range test.operations {
-			<-done
-		}
+		wg.Wait()
 		if got := Balance(); got != test.want {
 			t.Errorf("Balance() after %v = %d, want %d", test.operations, got, test.want)
 		}
