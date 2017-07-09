@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+go test -benchmem -bench=. -timeout 3600s -v ./...
