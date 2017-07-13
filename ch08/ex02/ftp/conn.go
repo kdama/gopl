@@ -9,8 +9,10 @@ import (
 // 状態は、データポート、データタイプ、ルートディレクトリを含みます。
 type Conn struct {
 	conn     net.Conn
-	dataport dataport
+	dataconn dataconn
+	dataport *dataport
 	datatype datatype
+	passive  net.Listener
 	rootDir  string
 }
 
