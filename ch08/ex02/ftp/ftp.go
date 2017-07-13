@@ -22,6 +22,8 @@ func Serve(c Conn) {
 		command, args := input[0], input[1:]
 		log.Printf("<< %s %v %s", command, args, c.dataport.toAddress())
 		switch command {
+		case "CWD":
+			c.cwd(args)
 		case "EPSV":
 			c.epsv(args)
 		case "LIST":
@@ -30,10 +32,10 @@ func Serve(c Conn) {
 			c.mode(args)
 		case "NOOP":
 			c.noop(args)
-		case "PASV":
-			c.pasv(args)
 		case "PORT":
 			c.port(args)
+		case "PWD":
+			c.pwd(args)
 		case "RETR":
 			c.retr(args)
 		case "SIZE":

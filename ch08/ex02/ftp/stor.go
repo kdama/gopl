@@ -11,7 +11,7 @@ func (c *Conn) stor(args []string) {
 		c.respond("501 Syntax error in parameters or arguments.")
 		return
 	}
-	target := c.rootDir + "/" + args[0]
+	target := c.rootDir + "/" + c.workDir + "/" + args[0]
 	file, err := os.Create(target)
 	if err != nil {
 		log.Print(err)
