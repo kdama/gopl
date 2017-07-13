@@ -7,8 +7,7 @@ import (
 )
 
 func (c *Conn) list(args []string) {
-	log.Print(c.rootDir)
-	target := c.rootDir
+	target := c.rootDir + "/" + c.workDir
 	if len(args) > 0 {
 		target += args[0]
 	}
@@ -31,8 +30,8 @@ func (c *Conn) list(args []string) {
 	if err != nil {
 		log.Print(err)
 		c.respond("450 Requested file action not taken. File unavailable.")
+		return
 	}
-
 	if stat.IsDir() {
 		filenames, err := file.Readdirnames(0)
 		if err != nil {
@@ -48,13 +47,15 @@ func (c *Conn) list(args []string) {
 				return
 			}
 		}
-	} else {
-		_, err = fmt.Fprint(w, target, c.eol())
-		if err != nil {
-			log.Print(err)
-			c.respond("426 Connection closed; transfer aborted.")
-			return
-		}
+		c.respond("226 Closing data connection. Requested file action successful.")
+		return
+	}
+	_, err = fmt.Fprint(w, target, c.eol())
+	if err != nil {
+		log.Print(err)
+		c.respond("426 Connection closed; transfer aborted.")
+		return
 	}
 	c.respond("226 Closing data connection. Requested file action successful.")
+	return
 }

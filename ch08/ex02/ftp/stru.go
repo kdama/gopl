@@ -1,5 +1,6 @@
 package ftp
 
+// STRU は "F" (ファイル構造) のみに対応します。
 func (c *Conn) stru(args []string) {
 	if len(args) != 1 {
 		c.respond("501 Syntax error in parameters or arguments.")

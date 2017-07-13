@@ -13,6 +13,6 @@ func (c *Conn) port(args []string) {
 		c.respond("501 Syntax error in parameters or arguments.")
 		return
 	}
-	c.dataport = *dataport
+	c.dataport = dataport
 	c.respond("200 Command okay.")
 }

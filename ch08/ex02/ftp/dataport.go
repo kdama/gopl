@@ -29,11 +29,17 @@ func dataportFromHostport(address string) (*dataport, error) {
 }
 
 func (d *dataport) toAddress() string {
+	if d == nil {
+		return ""
+	}
 	port := d.p1<<8 + d.p2
 	return fmt.Sprintf("%d.%d.%d.%d:%d", d.h1, d.h2, d.h3, d.h4, port)
 }
 
 func (d *dataport) toHostport() string {
+	if d == nil {
+		return ""
+	}
 	return fmt.Sprintf("%d,%d,%d,%d,%d,%d", d.h1, d.h2, d.h3, d.h4, d.p1, d.p2)
 }
 

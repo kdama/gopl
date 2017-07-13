@@ -12,7 +12,7 @@ func (c *Conn) retr(args []string) {
 		c.respond("501 Syntax error in parameters or arguments.")
 		return
 	}
-	target := c.rootDir + "/" + args[0]
+	target := c.rootDir + "/" + c.workDir + "/" + args[0]
 	file, err := os.Open(target)
 	if err != nil {
 		log.Print(err)
@@ -33,10 +33,15 @@ func (c *Conn) retr(args []string) {
 		r, w := bufio.NewReader(file), bufio.NewWriter(conn)
 		for {
 			line, isPrefix, err := r.ReadLine()
-			if err != nil {
-				if err == io.EOF {
-					break
+			if err == io.EOF {
+				err := w.Flush()
+				if err != nil {
+					log.Print(err)
 				}
+				c.respond("226 Closing data connection. Requested file action successful.")
+				return
+			}
+			if err != nil {
 				log.Print(err)
 				c.respond("450 Requested file action not taken. File unavailable.")
 				return
@@ -49,10 +54,6 @@ func (c *Conn) retr(args []string) {
 				w.Write([]byte(c.eol()))
 			}
 		}
-		err := w.Flush()
-		if err != nil {
-			log.Print(err)
-		}
 	case image:
 		_, err := io.Copy(conn, file)
 		if err != nil {
@@ -60,6 +61,7 @@ func (c *Conn) retr(args []string) {
 			c.respond("450 Requested file action not taken. File unavailable.")
 			return
 		}
+		c.respond("226 Closing data connection. Requested file action successful.")
+		return
 	}
-	c.respond("226 Closing data connection. Requested file action successful.")
 }
