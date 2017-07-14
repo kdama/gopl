@@ -21,7 +21,7 @@ func (c *WordCounter) Write(p []byte) (int, error) {
 		i++
 	}
 	*c += WordCounter(i)
-	return i, nil
+	return len(p), nil
 }
 
 func (c *LineCounter) Write(p []byte) (int, error) {
@@ -31,7 +31,7 @@ func (c *LineCounter) Write(p []byte) (int, error) {
 		i++
 	}
 	*c += LineCounter(i)
-	return i, nil
+	return len(p), nil
 }
 
 func main() {
