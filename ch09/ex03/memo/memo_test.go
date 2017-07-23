@@ -11,7 +11,7 @@ import (
 )
 
 // タイムアウト時間内に　Get が完了しない場合は、キャンセルします。
-const timeout = 10 * time.Second
+const timeout = 1 * time.Minute
 
 func Test(t *testing.T) {
 	m := New(httpGetBody)
