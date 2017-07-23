@@ -29,7 +29,6 @@ func list(f *os.File) ([]archive.FileHeader, error) {
 }
 
 func init() {
-	archive.RegisterFormat("zip", "PK", 0, list)
 	archive.RegisterFormat("zip", "PK\x03\x04", 0, list)
 	archive.RegisterFormat("zip", "PK\x05\x06", 0, list)
 
