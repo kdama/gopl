@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func (c *Conn) stor(args []string) {
@@ -11,7 +12,7 @@ func (c *Conn) stor(args []string) {
 		c.respond("501 Syntax error in parameters or arguments.")
 		return
 	}
-	target := c.rootDir + "/" + c.workDir + "/" + args[0]
+	target := filepath.Join(c.rootDir, c.workDir, args[0])
 	file, err := os.Create(target)
 	if err != nil {
 		log.Print(err)
