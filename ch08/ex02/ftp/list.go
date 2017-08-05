@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func (c *Conn) list(args []string) {
-	target := c.rootDir + "/" + c.workDir
+	target := filepath.Join(c.rootDir, c.workDir)
 	if len(args) > 0 {
-		target += args[0]
+		target = filepath.Join(target, args[0])
 	}
-	file, err := os.Open(target)
+	f, err := os.Open(target)
 	if err != nil {
 		log.Print(err)
 		c.respond("550 Requested action not taken. File unavailable.")
@@ -26,14 +27,14 @@ func (c *Conn) list(args []string) {
 		return
 	}
 	defer w.Close()
-	stat, err := file.Stat()
+	stat, err := f.Stat()
 	if err != nil {
 		log.Print(err)
 		c.respond("450 Requested file action not taken. File unavailable.")
 		return
 	}
 	if stat.IsDir() {
-		filenames, err := file.Readdirnames(0)
+		filenames, err := f.Readdirnames(0)
 		if err != nil {
 			log.Print(err)
 			c.respond("550 Requested action not taken. File unavailable.")
@@ -50,7 +51,13 @@ func (c *Conn) list(args []string) {
 		c.respond("226 Closing data connection. Requested file action successful.")
 		return
 	}
-	_, err = fmt.Fprint(w, target, c.eol())
+	rel, err := filepath.Rel(c.rootDir, target)
+	if err != nil {
+		log.Print(err)
+		c.respond("426 Connection closed; transfer aborted.")
+		return
+	}
+	_, err = fmt.Fprint(w, rel, c.eol())
 	if err != nil {
 		log.Print(err)
 		c.respond("426 Connection closed; transfer aborted.")

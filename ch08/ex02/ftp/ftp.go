@@ -10,7 +10,6 @@ import (
 
 // Serve は、FTP 接続をハンドルして、FTP サーバとして振る舞います。
 func Serve(c Conn) {
-	c.respond("120 Service ready in 1 minutes.")
 	c.respond("220 Service ready for new user.")
 
 	s := bufio.NewScanner(c.conn)
@@ -44,6 +43,8 @@ func Serve(c Conn) {
 			c.stor(args)
 		case "STRU":
 			c.stru(args)
+		case "SYST":
+			c.syst(args)
 		case "TYPE":
 			c.typeCommand(args)
 		case "USER":
