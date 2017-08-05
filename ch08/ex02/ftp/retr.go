@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func (c *Conn) retr(args []string) {
@@ -12,7 +13,7 @@ func (c *Conn) retr(args []string) {
 		c.respond("501 Syntax error in parameters or arguments.")
 		return
 	}
-	target := c.rootDir + "/" + c.workDir + "/" + args[0]
+	target := filepath.Join(c.rootDir, c.workDir, args[0])
 	file, err := os.Open(target)
 	if err != nil {
 		log.Print(err)

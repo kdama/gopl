@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"path/filepath"
 
 	"github.com/kdama/gopl/ch08/ex02/ftp"
 )
@@ -20,7 +21,7 @@ func init() {
 }
 
 func main() {
-	server := fmt.Sprintf("localhost:%d", port)
+	server := fmt.Sprintf(":%d", port)
 	listener, err := net.Listen("tcp", server)
 	if err != nil {
 		log.Fatal(err)
@@ -37,5 +38,9 @@ func main() {
 
 func handleConn(c net.Conn) {
 	defer c.Close()
-	ftp.Serve(ftp.NewConn(c, rootDir))
+	abs, err := filepath.Abs(rootDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ftp.Serve(ftp.NewConn(c, abs))
 }
