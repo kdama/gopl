@@ -54,7 +54,7 @@ func (c *Conn) list(args []string) {
 	rel, err := filepath.Rel(c.rootDir, target)
 	if err != nil {
 		log.Print(err)
-		c.respond("426 Connection closed; transfer aborted.")
+		c.respond("550 Requested action not taken. File unavailable.")
 		return
 	}
 	_, err = fmt.Fprint(w, rel, c.eol())
