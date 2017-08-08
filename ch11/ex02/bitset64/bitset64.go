@@ -1,5 +1,5 @@
-// Package intset64 は、ビットベクタベースの整数のセットを提供します。
-package intset64
+// Package bitset64 は、ビットベクタベースの整数のセットを提供します。
+package bitset64
 
 import (
 	"bytes"

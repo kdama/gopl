@@ -1,60 +1,76 @@
 # testall.bash
 
-次の表は、ワードの大きさを 32 バイトに設定した IntSet において掛かった時間を 1.00 として、ワードの大きさを 64 バイトに設定した IntSet と、マップに基づくセット MapSet において掛かった時間を示している。
-DifferenceWith のような、2 つの集合に関する計算については、IntSet64 の性能が最も良く、MapSet の性能が著しく悪かった。
+次の表は、ワードの大きさを 16 ビットに設定したセット (BitSet16) において掛かった時間を 1 として、ワードの大きさを 32 ビット、64 ビットに設定した BitSet と、マップに基づくセット MapSet において掛かった時間を示している。
 
-|                     | IntSet32 | IntSet64 | MapSet   |
-|---------------------|----------|----------|----------|
-| Add                 |     1.00 |     0.98 |    15.45 |
-| AddAll              |     1.00 |     0.99 |    28.70 |
-| Clear               |     1.00 |     0.95 |    16.51 |
-| Copy                |     1.00 |     0.49 |   885.69 |
-| DifferenceWith      |     1.00 |     0.56 |   689.74 |
-| Elems               |     1.00 |     0.94 |    27.76 |
-| Has                 |     1.00 |     0.96 |    29.99 |
-| InteresectWith      |     1.00 |     0.68 |   885.65 |
-| Len                 |     1.00 |     0.84 |     0.00 |
-| Remove              |     1.00 |     0.96 |     0.94 |
-| SymmetricDifference |     1.00 |     0.59 |   462.57 |
-| UnionWith           |     1.00 |     0.47 |   188.47 |
+|                     | BitSet16 | BitSet32 | BitSet64 | MapSet   |
+| ------------------- | -------- | -------- | -------- | -------- |
+| Add                 |        1 |     0.99 |     0.99 |    25.36 |
+| AddAll              |        1 |     0.99 |     0.98 |    24.23 |
+| Clear               |        1 |     1.01 |     1.00 |    16.79 |
+| Copy                |        1 |     0.73 |     0.61 |   446.15 |
+| DifferenceWith      |        1 |     0.51 |     0.28 |   838.21 |
+| Elems               |        1 |     0.94 |     0.95 |    14.96 |
+| Has                 |        1 |     1.00 |     1.00 |    82.03 |
+| IntersectWith       |        1 |     0.55 |     0.26 |   814.29 |
+| Len                 |        1 |     0.67 |     0.51 |     0.00 |
+| Remove              |        1 |     0.99 |     0.95 |    25.05 |
+| SymmetricDifference |        1 |     0.55 |     0.26 | 1,812.87 |
+| UnionWith           |        1 |     0.52 |     0.27 | 1,059.46 |
+
+表から、次の性質が分かる。
+
+- BitSet については、どのような演算においても、BitSet16 よりも BitSet32 のほうが性能が良く、BitSet32 よりも BitSet64 のほうが性能が良い。
+- Len を除くすべての演算で、MapSet の性能は悪い。特に、DifferenceWith のような 2 つの集合に関する計算の性能が著しく悪い。
 
 ベンチマークの出力は次の通り。
 
 ```
-BenchmarkIntSet32Add-4                              5000            277449 ns/op
-BenchmarkIntSet32AddAll-4                           2000            648814 ns/op
-BenchmarkIntSet32Clear-4                        200000000                6.42 ns/op
-BenchmarkIntSet32Copy-4                           200000             10364 ns/op
-BenchmarkIntSet32DifferenceWith-4                 500000              2496 ns/op
-BenchmarkIntSet32Elems-4                            3000            478009 ns/op
-BenchmarkIntSet32Has-4                             20000             59068 ns/op
-BenchmarkIntSet32IntersectWith-4                  500000              2295 ns/op
-BenchmarkIntSet32Len-4                            100000             19554 ns/op
-BenchmarkIntSet32Remove-4                          10000            159785 ns/op
-BenchmarkIntSet32SymmetricDifference-4            500000              2400 ns/op
-BenchmarkIntSet32UnionWith-4                      300000              3874 ns/op
-BenchmarkIntSet64Add-4                              5000            272224 ns/op
-BenchmarkIntSet64AddAll-4                           2000            641635 ns/op
-BenchmarkIntSet64Clear-4                        200000000                6.10 ns/op
-BenchmarkIntSet64Copy-4                           300000              5097 ns/op
-BenchmarkIntSet64DifferenceWith-4                1000000              1394 ns/op
-BenchmarkIntSet64Elems-4                            3000            450034 ns/op
-BenchmarkIntSet64Has-4                             30000             57000 ns/op
-BenchmarkIntSet64IntersectWith-4                 1000000              1565 ns/op
-BenchmarkIntSet64Len-4                            100000             16419 ns/op
-BenchmarkIntSet64Remove-4                          10000            154045 ns/op
-BenchmarkIntSet64SymmetricDifference-4           1000000              1410 ns/op
-BenchmarkIntSet64UnionWith-4                     1000000              1814 ns/op
-BenchmarkMapSetAdd-4                                 300           4285646 ns/op
-BenchmarkMapSetAddAll-4                              100          18618812 ns/op
-BenchmarkMapSetClear-4                          20000000               106 ns/op
-BenchmarkMapSetCopy-4                                200           9179242 ns/op
-BenchmarkMapSetDifferenceWith-4                     1000           1721590 ns/op
-BenchmarkMapSetElems-4                               100          13267311 ns/op
-BenchmarkMapSetHas-4                                1000           1771228 ns/op
-BenchmarkMapSetIntersectWith-4                       500           2032573 ns/op
-BenchmarkMapSetLen-4                            2000000000               0.60 ns/op
-BenchmarkMapSetRemove-4                            10000            150888 ns/op
-BenchmarkMapSetSymmetricDifference-4                 300           5910172 ns/op
-BenchmarkMapSetUnionWith-4                           300           4604139 ns/op
+BenchmarkBitSet16Add-4                                30          48574741 ns/op
+BenchmarkBitSet16AddAll-4                             10         116247776 ns/op
+BenchmarkBitSet16Clear-4                        300000000                5.67 ns/op
+BenchmarkBitSet16Copy-4                              500           2748983 ns/op
+BenchmarkBitSet16DifferenceWith-4                   2000            853575 ns/op
+BenchmarkBitSet16Elems-4                              20         101473959 ns/op
+BenchmarkBitSet16Has-4                               200           7139585 ns/op
+BenchmarkBitSet16IntersectWith-4                    2000            785878 ns/op
+BenchmarkBitSet16Len-4                               100          10493501 ns/op
+BenchmarkBitSet16Remove-4                             20          81804526 ns/op
+BenchmarkBitSet16SymmetricDifference-4              2000            781388 ns/op
+BenchmarkBitSet16UnionWith-4                        1000           1175321 ns/op
+BenchmarkBitSet32Add-4                                30          48199604 ns/op
+BenchmarkBitSet32AddAll-4                             10         114729479 ns/op
+BenchmarkBitSet32Clear-4                        300000000                5.72 ns/op
+BenchmarkBitSet32Copy-4                             1000           1999194 ns/op
+BenchmarkBitSet32DifferenceWith-4                   3000            431406 ns/op
+BenchmarkBitSet32Elems-4                              20          95525818 ns/op
+BenchmarkBitSet32Has-4                               200           7122982 ns/op
+BenchmarkBitSet32IntersectWith-4                    3000            429872 ns/op
+BenchmarkBitSet32Len-4                               200           7034466 ns/op
+BenchmarkBitSet32Remove-4                             20          80948434 ns/op
+BenchmarkBitSet32SymmetricDifference-4              3000            430235 ns/op
+BenchmarkBitSet32UnionWith-4                        2000            605338 ns/op
+BenchmarkBitSet64Add-4                                30          47928553 ns/op
+BenchmarkBitSet64AddAll-4                             10         114323131 ns/op
+BenchmarkBitSet64Clear-4                        300000000                5.67 ns/op
+BenchmarkBitSet64Copy-4                             1000           1689454 ns/op
+BenchmarkBitSet64DifferenceWith-4                   5000            241746 ns/op
+BenchmarkBitSet64Elems-4                              20          96458791 ns/op
+BenchmarkBitSet64Has-4                               200           7115726 ns/op
+BenchmarkBitSet64IntersectWith-4                    5000            205683 ns/op
+BenchmarkBitSet64Len-4                               300           5356103 ns/op
+BenchmarkBitSet64Remove-4                             20          79429189 ns/op
+BenchmarkBitSet64SymmetricDifference-4              5000            202963 ns/op
+BenchmarkBitSet64UnionWith-4                        5000            320187 ns/op
+BenchmarkMapSetAdd-4                                   1        1231970556 ns/op
+BenchmarkMapSetAddAll-4                                1        2816510242 ns/op
+BenchmarkMapSetClear-4                          20000000                95.2 ns/op
+BenchmarkMapSetCopy-4                                  1        1226467119 ns/op
+BenchmarkMapSetDifferenceWith-4                        2         715476271 ns/op
+BenchmarkMapSetElems-4                                 1        1517646265 ns/op
+BenchmarkMapSetHas-4                                   2         585687783 ns/op
+BenchmarkMapSetIntersectWith-4                         2         639930156 ns/op
+BenchmarkMapSetLen-4                            2000000000               0.54 ns/op
+BenchmarkMapSetRemove-4                                1        2064251811 ns/op
+BenchmarkMapSetSymmetricDifference-4                   1        1416554046 ns/op
+BenchmarkMapSetUnionWith-4                             1        1245203210 ns/op
 ```
