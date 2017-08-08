@@ -1,4 +1,4 @@
-package intset32
+package bitset64
 
 import (
 	"reflect"
