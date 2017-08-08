@@ -1,5 +1,5 @@
-// Package intset32 は、ビットベクタベースの整数のセットを提供します。
-package intset32
+// Package bitset32 は、ビットベクタベースの整数のセットを提供します。
+package bitset32
 
 import (
 	"bytes"
