@@ -1,10 +1,14 @@
 // Package bank は、一つの口座を持つ並行的に安全な銀行を提供します。
 package bank
 
-var deposits = make(chan int)    // send amount to deposit
-var balances = make(chan int)    // receive balance
-var withdraws = make(chan int)   // send amount to withdraw
-var sufficient = make(chan bool) //  sufficient balance or not to withdraw
+type withdrawMessage struct {
+	amount     int
+	sufficient chan<- bool
+}
+
+var deposits = make(chan int)              // send amount to deposit
+var balances = make(chan int)              // receive balance
+var withdraws = make(chan withdrawMessage) // send amount to withdraw
 
 // Deposit は、指定された金額を口座に預け入れます。
 func Deposit(amount int) {
@@ -13,7 +17,8 @@ func Deposit(amount int) {
 
 // Withdraw は、指定された金額を口座から引き出します。
 func Withdraw(amount int) bool {
-	withdraws <- amount
+	sufficient := make(chan bool)
+	withdraws <- withdrawMessage{amount, sufficient}
 	return <-sufficient
 }
 
@@ -28,12 +33,12 @@ func teller() {
 		select {
 		case amount := <-deposits:
 			balance += amount
-		case amount := <-withdraws:
-			ok := balance >= amount
+		case msg := <-withdraws:
+			ok := balance >= msg.amount
 			if ok {
-				balance -= amount
+				balance -= msg.amount
 			}
-			sufficient <- ok
+			msg.sufficient <- ok
 		case balances <- balance:
 		}
 	}
