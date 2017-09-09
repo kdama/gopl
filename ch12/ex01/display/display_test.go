@@ -258,7 +258,7 @@ func Test(t *testing.T) {
 	}
 }
 
-func TestLen(t *testing.T) {
+func TestFormatAsMapKey(t *testing.T) {
 	var tests = []struct {
 		in   interface{}
 		want string
