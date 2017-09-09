@@ -1,4 +1,4 @@
-// ch12/ex04 は、Go の値を S 式形式でエンコードして、プリティプリントします。
+// ch12/ex05 は、Go の値を JSON 形式でエンコードして、プリティプリントします。
 package main
 
 import (
@@ -6,7 +6,7 @@ import (
 	"log"
 	"math"
 
-	"github.com/kdama/gopl/ch12/ex04/sexpr"
+	"github.com/kdama/gopl/ch12/ex05/json"
 )
 
 func main() {
@@ -19,7 +19,6 @@ func main() {
 		True            bool
 		False           bool
 		Float           float64
-		Complex         complex128
 		Interface       interface{}
 	}
 	strangelove := Movie{
@@ -43,11 +42,10 @@ func main() {
 		True:      true,
 		False:     false,
 		Float:     math.Pi,
-		Complex:   complex(1, 2),
 		Interface: []int{1, 2, 3},
 	}
 
-	data, err := sexpr.MarshalIndent(strangelove)
+	data, err := json.Marshal(strangelove)
 	if err != nil {
 		log.Fatal(err)
 	}
