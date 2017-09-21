@@ -107,7 +107,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 		} else {
 			var b bytes.Buffer
 			encode(&b, v.Elem())
-			fmt.Fprintf(buf, "%q %s", v.Elem().Type(), b.String())
+			fmt.Fprintf(buf, "(%q %s)", v.Elem().Type(), b.String())
 		}
 
 	default: // float, complex, bool, chan, func, interface
