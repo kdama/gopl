@@ -20,28 +20,29 @@ func SearchComic(from ComicIndex, terms []string) []*Comic {
 
 func hit(comic *Comic, terms []string) bool {
 	for _, term := range terms {
-		if strings.Contains(comic.Alt, term) {
+		switch {
+		case strings.Contains(comic.Alt, term):
 			continue
-		} else if strings.Contains(comic.Day, term) {
+		case strings.Contains(comic.Day, term):
 			continue
-		} else if strings.Contains(comic.Img, term) {
+		case strings.Contains(comic.Img, term):
 			continue
-		} else if strings.Contains(comic.Link, term) {
+		case strings.Contains(comic.Link, term):
 			continue
-		} else if strings.Contains(comic.Month, term) {
+		case strings.Contains(comic.Month, term):
 			continue
-		} else if strings.Contains(comic.News, term) {
+		case strings.Contains(comic.News, term):
 			continue
-		} else if strings.Contains(comic.SafeTitle, term) {
+		case strings.Contains(comic.SafeTitle, term):
 			continue
-		} else if strings.Contains(comic.Title, term) {
+		case strings.Contains(comic.Title, term):
 			continue
-		} else if strings.Contains(comic.Transcript, term) {
+		case strings.Contains(comic.Transcript, term):
 			continue
-		} else if strings.Contains(comic.Year, term) {
+		case strings.Contains(comic.Year, term):
 			continue
-		}
-		return false
+		default:
+			return false
 	}
 	return true
 }
