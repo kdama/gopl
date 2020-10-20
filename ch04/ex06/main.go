@@ -30,3 +30,26 @@ func removeDupSpace(b []byte) []byte {
 	}
 	return buf.Bytes()
 }
+
+// removeDupSpaceInPlace .
+func removeDupSpaceInPlace(b []byte) []byte {
+	isPreRuneSpace := false
+	l, r := 0, 0
+	for r < len(b) {
+		run, size := utf8.DecodeRune(b[r:])
+		if unicode.IsSpace(run) {
+			if !isPreRuneSpace {
+				b[l] = ' '
+				l++
+			}
+			isPreRuneSpace = true
+		} else {
+			copy(b[l:], b[r:r+size])
+			l += size
+			isPreRuneSpace = false
+		}
+		r += size
+	}
+	return b[:l]
+}
+
