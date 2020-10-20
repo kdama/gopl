@@ -24,5 +24,9 @@ func TestRemoveDupSpace(t *testing.T) {
 		if string(got) != string(test.want) {
 			t.Errorf("removeDupSpace(%q) = %q, want %q", string(test.b), string(got), string(test.want))
 		}
+		got = removeDupSpaceInPlace(test.b)
+		if string(got) != string(test.want) {
+			t.Errorf("removeDupSpaceInPlace(%q) = %q, want %q", string(test.b), string(got), string(test.want))
+		}
 	}
 }
